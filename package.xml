@@ -15,8 +15,4 @@
   <run_depend>opencv2</run_depend>
 
   <buildtool_depend>catkin</buildtool_depend>
-
-  <!--<export>-->
-    <!--<image_transport plugin="${prefix}/resized_plugins.xml"/>-->
-  <!--</export>-->
 </package>

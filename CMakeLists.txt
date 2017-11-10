@@ -15,7 +15,6 @@ add_executable(frames_publisher src/frames_publisher.cpp)
 add_dependencies(frames_publisher ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(frames_publisher ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
-# Mark executables and/or libraries for installation
 install(TARGETS frames_publisher
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
