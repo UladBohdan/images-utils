@@ -2,13 +2,13 @@
 #include <iostream>
 
 #include <ros/ros.h>
+#include "std_msgs/String.h"
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <boost/filesystem.hpp>
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     ros::init(argc, argv, "image_publisher");
     ros::NodeHandle nh;
     image_transport::ImageTransport it(nh);
@@ -17,6 +17,9 @@ int main(int argc, char** argv)
     std::vector<std::string> images;
 
     std::set<std::string> available_extensions{".png", ".PNG", ".jpg", ".JPG", ".jpeg", ".JPEG"};
+
+    ros::NodeHandle namesH;
+    ros::Publisher pubNames = namesH.advertise<std_msgs::String>("frames/names", 1);
 
     boost::filesystem::path path(argv[1]);
     boost::filesystem::directory_iterator iter{path};
@@ -42,8 +45,23 @@ int main(int argc, char** argv)
 
         pub.publish(msg);
         ros::spinOnce();
+
+        std_msgs::String msg2;
+        msg2.data = images[pos];
+        std::cout << "IMAGE " << images[pos] << " was pushed." << std::endl;
+        pubNames.publish(msg2);
+        ros::spinOnce();
+
         loop_rate.sleep();
+        // Temporary solution: to post photos one by one, manually.
+        // std::cout << "awaiting for any key to be pressed..." << std::endl;
+        // getchar();
+
         pos++;
+
+        // Comment condition below to publish photos indefinitely.
+	      if (pos >= images.size()) {
+	         return 0;
+         }
     }
 }
-
